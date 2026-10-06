@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #dfe2e4;
+  color: #121212;
+  font: 0.8rem ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+main { padding: 1rem; text-align: center; }
+img { display: block; max-width: 100%; max-height: 80vh; margin: 0 auto 1rem; border: 1px solid #121212; background: #fff; }
+a { color: #121212; font-weight: 700; }

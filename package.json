@@ -1,0 +1,15 @@
+{
+  "name": "mimeo",
+  "version": "1.0.0",
+  "description": "Meme generator web service with UI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@napi-rs/canvas": "^1.0.10",
+    "express": "^5.2.1"
+  }
+}

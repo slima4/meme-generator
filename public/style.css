@@ -1,0 +1,265 @@
+/*
+ * Direction: print-shop proof sheet. Cool grey stock, black ink, one spot
+ * colour (process magenta, the same one the canvas selection guide uses).
+ * Anton for the wordmark because it is the closest free relative of the
+ * Impact lettering memes are made of. Labels in system mono like margin
+ * notes on a proof. No radius, no drop shadows: ruled boxes only.
+ */
+@font-face {
+  font-family: "Anton";
+  src: url("/fonts/Anton-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
+:root {
+  --stock: #dfe2e4;
+  --sheet: #f3f4f5;
+  --ink: #121212;
+  --mute: #55595d;
+  --spot: #e6007e;
+  --rule: 2px solid var(--ink);
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --rail: 17rem;
+  --panel: 19rem;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
+
+body {
+  background: var(--stock);
+  color: var(--ink);
+  font: 15px/1.4 var(--body);
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+/* ---- top bar ---- */
+
+.bar {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding: 0.6rem 1rem;
+  border-bottom: var(--rule);
+  background: var(--sheet);
+}
+.mark {
+  margin: 0;
+  font: 400 1.9rem/1 "Anton", Impact, sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.bar-note { margin: 0; flex: 1; font: 0.75rem var(--mono); color: var(--mute); }
+.bar-link { font: 0.75rem var(--mono); color: var(--ink); text-underline-offset: 3px; }
+
+/* ---- layout ---- */
+
+.layout {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr) var(--panel);
+}
+.rail, .panel, .stage { min-height: 0; overflow-y: auto; }
+.rail { border-right: var(--rule); background: var(--sheet); }
+.panel { border-left: var(--rule); background: var(--sheet); padding: 1rem; }
+.stage { padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem; align-items: center; }
+
+.label {
+  display: block;
+  margin: 0 0 0.4rem;
+  padding: 0;
+  font: 700 0.7rem var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.note { margin: 0.4rem 0 0; font: 0.72rem/1.35 var(--mono); color: var(--mute); }
+.note:empty { display: none; }
+
+/* ---- template rail ---- */
+
+.rail-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.75rem;
+  background: var(--sheet);
+  border-bottom: 1px solid var(--ink);
+}
+.rail-head input {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border: var(--rule);
+  background: #fff;
+  border-radius: 0;
+}
+.tgrid {
+  list-style: none;
+  margin: 0;
+  padding: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+.tgrid button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 2px solid transparent;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+.tgrid img {
+  display: block;
+  width: 100%;
+  height: auto; /* beats the height attribute so aspect-ratio applies */
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: var(--stock);
+  border: 1px solid var(--ink);
+}
+.tgrid span {
+  display: block;
+  padding: 0.2rem 0.1rem 0;
+  font: 0.68rem/1.25 var(--mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tgrid button:hover img { outline: 2px solid var(--ink); }
+.tgrid button[aria-pressed="true"] { border-color: var(--spot); }
+.tgrid button[aria-pressed="true"] span { color: var(--spot); font-weight: 700; }
+
+/* ---- stage ---- */
+
+.sheet {
+  position: relative;
+  width: 100%;
+  padding: 1.75rem;
+  display: grid;
+  place-items: center;
+}
+/* crop marks */
+.sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0.5rem;
+  pointer-events: none;
+  --m: linear-gradient(var(--ink), var(--ink));
+  background:
+    var(--m) top left / 16px 1px no-repeat, var(--m) top left / 1px 16px no-repeat,
+    var(--m) top right / 16px 1px no-repeat, var(--m) top right / 1px 16px no-repeat,
+    var(--m) bottom left / 16px 1px no-repeat, var(--m) bottom left / 1px 16px no-repeat,
+    var(--m) bottom right / 16px 1px no-repeat, var(--m) bottom right / 1px 16px no-repeat;
+}
+.sheet.over { outline: 2px dashed var(--spot); outline-offset: -4px; }
+
+#cv {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 14rem);
+  background: #fff;
+  border: 1px solid var(--ink);
+  touch-action: none;
+}
+
+.hint {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 2rem;
+  text-align: center;
+  font: 0.8rem var(--mono);
+  color: var(--mute);
+  pointer-events: none;
+}
+.hint[hidden] { display: none; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+#status { margin: 0; min-height: 1.2em; text-align: center; }
+#status a { color: var(--ink); font-weight: 700; word-break: break-all; }
+
+/* ---- buttons ---- */
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 0.9rem;
+  border: var(--rule);
+  border-radius: 0;
+  background: var(--sheet);
+  font: 700 0.75rem var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn:hover:not(:disabled) { background: var(--ink); color: var(--sheet); }
+.btn.primary { background: var(--spot); }
+.btn.primary:hover:not(:disabled) { background: var(--ink); color: var(--spot); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn.small { padding: 0.35rem 0.6rem; font-size: 0.68rem; }
+.btn.file { position: relative; overflow: hidden; }
+.btn.file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; font-size: 0; }
+.btn.file:focus-within { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+/* ---- panel ---- */
+
+.boxes { list-style: none; margin: 0 0 0.6rem; padding: 0; display: grid; gap: 0.4rem; }
+.boxes li {
+  display: grid;
+  grid-template-columns: 1.6rem 1fr auto;
+  align-items: stretch;
+  border: 1px solid var(--ink);
+  background: #fff;
+}
+.boxes li.on { border-color: var(--spot); box-shadow: inset 4px 0 0 var(--spot); }
+.boxes .n { align-self: center; padding-left: 0.5rem; font: 0.68rem var(--mono); color: var(--mute); }
+.boxes input { min-width: 0; padding: 0.5rem 0.4rem; border: 0; background: none; border-radius: 0; }
+.boxes input:focus-visible { outline-offset: -3px; }
+.boxes .del {
+  padding: 0 0.6rem;
+  border: 0;
+  border-left: 1px solid var(--ink);
+  background: none;
+  font: 700 1rem var(--mono);
+  cursor: pointer;
+}
+.boxes .del:hover:not(:disabled) { background: var(--ink); color: #fff; }
+.boxes .del:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+.style { margin: 1.25rem 0; padding: 0.75rem 0 0; border: 0; border-top: 1px solid var(--ink); }
+.style legend { padding: 0 0.4rem 0 0; }
+.field { display: grid; grid-template-columns: 4.5rem 1fr; align-items: center; gap: 0.5rem; margin: 0.5rem 0; font: 0.75rem var(--mono); }
+.field.check { grid-template-columns: auto 1fr; }
+.field input[type="range"] { width: 100%; accent-color: var(--spot); }
+.field input[type="color"] { width: 3rem; height: 1.8rem; padding: 0; border: var(--rule); background: #fff; border-radius: 0; cursor: pointer; }
+.field input[type="checkbox"] { width: 1.1rem; height: 1.1rem; accent-color: var(--spot); }
+
+.upload { padding-top: 0.75rem; border-top: 1px solid var(--ink); }
+
+/* ---- narrow screens: stage first, then text, then templates ---- */
+
+@media (max-width: 62rem) {
+  body { display: block; }
+  .layout { display: flex; flex-direction: column; }
+  .rail, .panel, .stage { overflow: visible; }
+  .stage { order: 1; padding: 0.75rem; }
+  .panel { order: 2; border-left: 0; border-top: var(--rule); }
+  .rail { order: 3; border-right: 0; border-top: var(--rule); }
+  .tgrid { grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)); }
+  .sheet { padding: 1.25rem; }
+  #cv { max-height: 70vh; }
+  .bar-note { display: none; }
+  .bar { justify-content: space-between; }
+}

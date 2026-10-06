@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mimeo — meme generator</title>
+  <meta name="description" content="Caption a template or your own image, drag the text where you want it, download or share a link.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23e6007e'/%3E%3Cpath d='M6 25V7h4l6 9 6-9h4v18h-4V14l-6 9-6-9v11z' fill='%23121212'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="bar">
+    <h1 class="mark">Mimeo</h1>
+    <p class="bar-note">Caption a picture. Drag the text. Print it.</p>
+    <a class="bar-link" href="/api/templates">API</a>
+  </header>
+
+  <div class="layout">
+    <aside class="rail" aria-label="Templates">
+      <div class="rail-head">
+        <label class="label" for="tsearch">Templates</label>
+        <input id="tsearch" type="search" placeholder="Filter by name" autocomplete="off">
+      </div>
+      <ul id="tlist" class="tgrid"></ul>
+      <p id="tstatus" class="note" role="status"></p>
+    </aside>
+
+    <main class="stage">
+      <div id="sheet" class="sheet">
+        <canvas id="cv" width="1000" height="700" tabindex="0"
+                aria-label="Meme preview. Arrow keys move the selected text."></canvas>
+        <p id="hint" class="hint">Pick a template, drop an image here, or paste one.</p>
+      </div>
+      <div class="actions">
+        <button id="download" class="btn primary" disabled>Download PNG</button>
+        <button id="copy" class="btn" disabled>Copy image</button>
+        <button id="share" class="btn" disabled>Share link</button>
+      </div>
+      <p id="status" class="note" role="status" aria-live="polite"></p>
+    </main>
+
+    <section class="panel" aria-label="Text and image">
+      <h2 class="label">Text</h2>
+      <ol id="boxes" class="boxes"></ol>
+      <div class="row">
+        <button id="add" class="btn small">+ Add text</button>
+        <button id="reset" class="btn small">Reset positions</button>
+      </div>
+
+      <fieldset class="style">
+        <legend class="label">Selected text</legend>
+        <label class="field"><span>Size</span><input id="size" type="range" min="3" max="20" step="1"></label>
+        <label class="field"><span>Fill</span><input id="fill" type="color"></label>
+        <label class="field"><span>Outline</span><input id="stroke" type="color"></label>
+        <label class="field check"><input id="upper" type="checkbox"><span>UPPERCASE</span></label>
+      </fieldset>
+
+      <div class="upload">
+        <h2 class="label">Your own image</h2>
+        <label class="btn file">
+          Choose file
+          <input id="file" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+        </label>
+        <p class="note">Stays in your browser until you hit Share link.</p>
+      </div>
+    </section>
+  </div>
+
+  <script src="/render.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
