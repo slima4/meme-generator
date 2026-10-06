@@ -30,5 +30,17 @@
       { "x": 0.75, "y": 0.25, "w": 0.44, "size": 0.07, "fill": "#000000", "stroke": "#ffffff" },
       { "x": 0.75, "y": 0.75, "w": 0.44, "size": 0.07, "fill": "#000000", "stroke": "#ffffff" }
     ]
+  },
+  {
+    "id": "91998305",
+    "name": "Drake Blank",
+    "url": "https://i.imgflip.com/1iruch.jpg",
+    "width": 717,
+    "height": 717,
+    "boxes": 2,
+    "layout": [
+      { "x": 0.74, "y": 0.26, "w": 0.46, "size": 0.07, "fill": "#000000", "stroke": "#ffffff" },
+      { "x": 0.74, "y": 0.76, "w": 0.46, "size": 0.07, "fill": "#000000", "stroke": "#ffffff" }
+    ]
   }
 ]
